@@ -167,8 +167,10 @@ function ensureSchema(PDO $pdo) {
 function resetLicenseHwid(PDO $pdo, $userId, $licenseId, $limit) {
     $today = date('Y-m-d');
 
-    $st = $pdo->prepare("SELECT * FROM licenses WHERE id = ? AND user_id = ? AND is_deleted = 0 LIMIT 1");
-    $st->execute([(int)$licenseId, (int)$userId]);
+    // $userId = null হলে অ্যাডমিন-স্টক key (মালিক নেই), <=> NULL-safe তুলনা
+    $uid = ($userId === null) ? null : (int)$userId;
+    $st = $pdo->prepare("SELECT * FROM licenses WHERE id = ? AND user_id <=> ? AND is_deleted = 0 LIMIT 1");
+    $st->execute([(int)$licenseId, $uid]);
     $k = $st->fetch();
 
     if (!$k) {
@@ -188,9 +190,9 @@ function resetLicenseHwid(PDO $pdo, $userId, $licenseId, $limit) {
             reset_count = reset_count + 1,
             daily_reset_count = IF(last_reset_date = ?, daily_reset_count, 0) + 1,
             last_reset_date = ?
-        WHERE id = ? AND user_id = ? AND device_id IS NOT NULL AND device_id <> ''
+        WHERE id = ? AND user_id <=> ? AND device_id IS NOT NULL AND device_id <> ''
           AND (? = 0 OR last_reset_date IS NULL OR last_reset_date <> ? OR daily_reset_count < ?)");
-    $upd->execute([$today, $today, (int)$licenseId, (int)$userId, (int)$limit, $today, (int)$limit]);
+    $upd->execute([$today, $today, (int)$licenseId, $uid, (int)$limit, $today, (int)$limit]);
 
     if ($upd->rowCount() < 1) {
         return ['ok' => false, 'code' => 'DAILY_LIMIT_REACHED', 'message' => "Daily reset limit reached! You can reset this key a maximum of {$limit} times per day.", 'used' => $used, 'limit' => $limit, 'remaining' => 0];
@@ -198,7 +200,7 @@ function resetLicenseHwid(PDO $pdo, $userId, $licenseId, $limit) {
 
     try {
         $pdo->prepare("INSERT INTO reset_logs (license_key, user_id, ip_address) VALUES (?, ?, ?)")
-            ->execute([$k['license_key'], (int)$userId, $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0']);
+            ->execute([$k['license_key'], (int)$uid, $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0']);
     } catch (Throwable $e) {}
 
     $newUsed   = $used + 1;

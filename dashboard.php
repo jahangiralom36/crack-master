@@ -600,14 +600,65 @@ $resetLimitLabel = ($resetLimit > 0) ? "{$resetLimit} times per day" : "unlimite
         .service-list li b { color:#fff; display:block; margin-bottom:2px; }
         .service-list li span { color:#8b7ba8; font-size:12px; }
 
-        .api-key-box { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#090518; border:1px solid #271656; border-radius:14px; padding:12px; }
-        .api-key-box input { flex:1; min-width:200px; background:transparent; border:none; color:#c084fc; font-family:monospace; font-weight:700; font-size:13px !important; }
-        .code-block { position:relative; background:#05030f; border:1px solid #21134a; border-radius:12px; padding:14px 14px 14px; margin:8px 0 16px; overflow-x:auto; }
-        .code-block pre { padding-right:64px; color:#d8b4fe; font-family:Consolas,Monaco,monospace; font-size:12px; line-height:1.55; white-space:pre; }
-        .code-block .copy-code { position:absolute; top:8px; right:8px; background:#1f1442; color:#c084fc; border:1px solid #382468; border-radius:8px; padding:4px 10px; font-size:11px !important; font-weight:800; cursor:pointer; }
-        .doc-h { font-size:12px; font-weight:800; color:#c084fc; text-transform:uppercase; letter-spacing:0.5px; margin:18px 0 6px; display:flex; align-items:center; gap:8px; }
-        .method-tag { display:inline-block; padding:2px 8px; border-radius:6px; font-size:10px; font-weight:900; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3); }
-        .info-note { background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.25); border-radius:12px; padding:12px 14px; font-size:12.5px; color:#d8b4fe; margin-bottom:14px; }
+        .api-key-box { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#090518; border:1px solid #271656; border-radius:14px; padding:10px 12px; }
+        .api-key-box input { flex:1; min-width:150px; background:transparent; border:none; color:#c084fc; font-family:monospace; font-weight:700; font-size:13px !important; }
+        .info-note { background:rgba(168,85,247,0.08); border:1px solid rgba(168,85,247,0.25); border-radius:12px; padding:12px 14px; font-size:12.5px; color:#d8b4fe; margin-bottom:14px; line-height:1.55; }
+
+        /* API page */
+        .api-hero { position:relative; overflow:hidden; border-radius:22px; padding:22px 20px; margin-bottom:18px; background:linear-gradient(135deg, #2a0f5e 0%, #4c1d95 55%, #7e22ce 100%); border:1px solid rgba(192,132,252,0.45); box-shadow:0 12px 40px rgba(126,34,206,0.35); }
+        .api-hero::after { content:''; position:absolute; right:-40px; top:-40px; width:160px; height:160px; border-radius:50%; background:radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%); }
+        .api-hero h3 { font-size:20px; font-weight:900; color:#fff; margin-bottom:6px; }
+        .api-hero p { font-size:13px; color:#e9d5ff; line-height:1.55; max-width:560px; }
+        .chip-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+        .chip { display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; padding:6px 11px; border-radius:20px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.22); color:#fff; }
+        .chip.good { background:rgba(16,185,129,0.22); border-color:rgba(52,211,153,0.5); color:#a7f3d0; }
+        .chip.bad { background:rgba(239,68,68,0.22); border-color:rgba(248,113,113,0.5); color:#fecaca; }
+
+        .api-steps { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; margin-bottom:18px; }
+        .api-step { background:#0f0927; border:1px solid #21134a; border-radius:18px; padding:16px; position:relative; }
+        .api-step .num { width:28px; height:28px; border-radius:9px; background:linear-gradient(135deg,#a855f7,#7e22ce); color:#fff; font-weight:900; font-size:13px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; box-shadow:0 0 14px rgba(168,85,247,0.5); }
+        .api-step b { display:block; color:#fff; font-size:13.5px; margin-bottom:4px; }
+        .api-step span { color:#8b7ba8; font-size:12px; line-height:1.5; }
+
+        .url-bar { display:flex; align-items:center; gap:10px; background:#05030f; border:1px solid #271656; border-radius:14px; padding:6px 6px 6px 14px; }
+        .url-bar code { flex:1; min-width:0; overflow-x:auto; white-space:nowrap; color:#d8b4fe; font-size:12.5px; font-family:Consolas,Monaco,monospace; scrollbar-width:none; }
+        .url-bar code::-webkit-scrollbar { display:none; }
+        .url-bar .verb { font-size:10px; font-weight:900; color:#34d399; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); padding:3px 8px; border-radius:6px; }
+
+        .ep-card { background:#0f0927; border:1px solid #21134a; border-radius:16px; margin-bottom:12px; overflow:hidden; }
+        .ep-card summary { list-style:none; cursor:pointer; padding:14px 16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+        .ep-card summary::-webkit-details-marker { display:none; }
+        .ep-card summary .ep-name { font-family:Consolas,Monaco,monospace; font-weight:800; color:#fff; font-size:14px; }
+        .ep-card summary .ep-desc { flex-basis:100%; color:#8b7ba8; font-size:12px; margin-top:-2px; }
+        .ep-card summary .chev { margin-left:auto; color:#7e6d9e; transition:0.2s; }
+        .ep-card[open] summary .chev { transform:rotate(180deg); color:#c084fc; }
+        .ep-body { padding:0 16px 16px; border-top:1px solid #1f1442; }
+        .ep-body h5 { font-size:11px; color:#c084fc; text-transform:uppercase; letter-spacing:0.5px; margin:14px 0 6px; }
+        .tag { display:inline-block; padding:3px 9px; border-radius:6px; font-size:10px; font-weight:900; letter-spacing:0.4px; }
+        .tag-open { background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.3); }
+        .tag-key { background:rgba(234,179,8,0.15); color:#facc15; border:1px solid rgba(234,179,8,0.3); }
+        .param-row { display:flex; gap:10px; align-items:baseline; padding:8px 0; border-bottom:1px dashed #1f1442; font-size:12.5px; }
+        .param-row code { color:#c084fc; font-weight:800; }
+        .param-row em { color:#8b7ba8; font-style:normal; }
+
+        .code-wrap { background:#05030f; border:1px solid #21134a; border-radius:14px; overflow:hidden; margin:6px 0 4px; }
+        .code-head { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:8px 10px 8px 14px; background:#0b0620; border-bottom:1px solid #1f1442; }
+        .code-head .dots { display:flex; gap:5px; }
+        .code-head .dots i { width:9px; height:9px; border-radius:50%; background:#3b2a6b; display:block; }
+        .code-head .lang { font-size:11px; font-weight:800; color:#8b7ba8; text-transform:uppercase; letter-spacing:0.5px; flex:1; margin-left:6px; }
+        .copy-code { background:#1f1442; color:#c084fc; border:1px solid #382468; border-radius:8px; padding:5px 11px; font-size:11px !important; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }
+        .copy-code:active { background:#a855f7; color:#fff; }
+        .code-wrap pre { padding:14px; overflow-x:auto; color:#d8b4fe; font-family:Consolas,Monaco,monospace; font-size:12px; line-height:1.6; white-space:pre; }
+        .lang-tabs { display:flex; gap:8px; overflow-x:auto; margin-bottom:10px; scrollbar-width:none; }
+        .lang-tabs::-webkit-scrollbar { display:none; }
+        .lang-btn { background:#0e0822; border:1px solid #271656; color:#94a3b8; font-weight:800; font-size:12px !important; padding:8px 14px; border-radius:10px; cursor:pointer; white-space:nowrap; display:inline-flex; align-items:center; gap:7px; }
+        .lang-btn.active { background:#1a1038; color:#fff; border-color:#a855f7; box-shadow:0 0 14px rgba(168,85,247,0.3); }
+        .code-pane { display:none; } .code-pane.active { display:block; }
+        .err-row { display:flex; gap:10px; align-items:flex-start; padding:11px 0; border-bottom:1px dashed #1f1442; font-size:12.5px; }
+        .err-row:last-child { border-bottom:none; }
+        .http { min-width:42px; text-align:center; font-weight:900; font-size:11px; padding:3px 0; border-radius:6px; background:rgba(239,68,68,0.15); color:#f87171; border:1px solid rgba(239,68,68,0.3); }
+        .err-row code { color:#c084fc; font-weight:800; font-size:11.5px; }
+        .err-row span { color:#8b7ba8; display:block; margin-top:2px; }
     </style>
 </head>
 <body>
@@ -935,123 +986,164 @@ $resetLimitLabel = ($resetLimit > 0) ? "{$resetLimit} times per day" : "unlimite
             </div>
 
             <!-- TAB: API DOCUMENTS -->
+            <?php
+                $bH = htmlspecialchars($apiBase);
+                $limTxt = $resetLimit > 0 ? $resetLimit . ' resets / key / day' : 'Unlimited resets';
+                $examples = [
+                    'curl' => ['cURL', 'fa-terminal', "curl -X POST \"{$apiBase}?action=reset_key\" \\\n  -d \"license_key=FF-XXXXXX-XXXXXX\""],
+                    'py'   => ['Python', 'fa-brands fa-python', "import requests\n\nr = requests.post(\n    \"{$apiBase}\",\n    params={\"action\": \"reset_key\"},\n    data={\"license_key\": \"FF-XXXXXX-XXXXXX\"},\n)\nprint(r.json())"],
+                    'js'   => ['JavaScript', 'fa-brands fa-js', "const res = await fetch(\"{$apiBase}?action=reset_key\", {\n  method: \"POST\",\n  headers: { \"Content-Type\": \"application/x-www-form-urlencoded\" },\n  body: new URLSearchParams({ license_key: \"FF-XXXXXX-XXXXXX\" })\n});\nconsole.log(await res.json());"],
+                    'php'  => ['PHP', 'fa-brands fa-php', "<?php\n\$ch = curl_init(\"{$apiBase}?action=reset_key\");\ncurl_setopt_array(\$ch, [\n    CURLOPT_POST => true,\n    CURLOPT_POSTFIELDS => ['license_key' => 'FF-XXXXXX-XXXXXX'],\n    CURLOPT_RETURNTRANSFER => true,\n]);\necho curl_exec(\$ch);"],
+                    'get'  => ['Browser (GET)', 'fa-globe', "{$apiBase}?action=reset_key&license_key=FF-XXXXXX-XXXXXX"],
+                ];
+                $okSample = "{\n  \"status\": \"success\",\n  \"message\": \"Device HWID reset successfully!\",\n  \"data\": {\n    \"license_key\": \"FF-XXXXXX-XXXXXX\",\n    \"game\": \"FreeFire\",\n    \"resets_used_today\": 1,\n    \"resets_left_today\": " . ($resetLimit > 0 ? max(0, $resetLimit - 1) : 'null') . ",\n    \"daily_limit\": {$resetLimit}\n  }\n}";
+                $errSample = "{\n  \"status\": \"error\",\n  \"code\": \"DAILY_LIMIT_REACHED\",\n  \"message\": \"Daily reset limit reached! You can reset this key a maximum of " . max(1, $resetLimit) . " times per day.\"\n}";
+                $infoSample = "{\n  \"status\": \"success\",\n  \"data\": {\n    \"license_key\": \"FF-XXXXXX-XXXXXX\",\n    \"game\": \"FreeFire\",\n    \"duration\": \"7 days\",\n    \"state\": \"active\",\n    \"device_bound\": true,\n    \"expires_at\": \"2026-12-01 18:30:00\",\n    \"resets_used_today\": 1,\n    \"resets_left_today\": " . ($resetLimit > 0 ? max(0, $resetLimit - 1) : 'null') . ",\n    \"daily_limit\": {$resetLimit}\n  }\n}";
+                // কোড ব্লক রেন্ডার করার ছোট ফাংশন
+                function codeBox($id, $label, $code) {
+                    echo '<div class="code-wrap"><div class="code-head"><div class="dots"><i></i><i></i><i></i></div><span class="lang">' . htmlspecialchars($label) . '</span>'
+                       . '<button type="button" class="copy-code" onclick="copyText(document.getElementById(\'' . $id . '\').innerText, \'Copied!\')"><i class="fa-solid fa-copy"></i> Copy</button></div>'
+                       . '<pre id="' . $id . '">' . htmlspecialchars($code) . '</pre></div>';
+                }
+            ?>
             <div id="tab-api" class="tab-content">
-                <div class="panel">
-                    <h3><i class="fa-solid fa-code"></i> API Documents</h3>
-                    <p style="color:#8b7ba8; font-size:13px; margin-bottom:14px;">Automate key resets from your own bot or website. Daily limit: <b style="color:#fff;"><?= $resetLimit > 0 ? $resetLimit . ' resets per key per day' : 'Unlimited'; ?></b> (shared with the panel).</p>
 
-                    <?php if (!$apiEnabled): ?>
-                        <div class="info-note" style="border-color:rgba(239,68,68,0.4); color:#fca5a5; background:rgba(239,68,68,0.08);"><i class="fa-solid fa-triangle-exclamation"></i> API access is currently disabled by the administrator. Requests will be rejected until it is enabled again.</div>
-                    <?php endif; ?>
-
-                    <div class="doc-h"><i class="fa-solid fa-key"></i> Your API Key</div>
-                    <?php if (!empty($currentUser['api_key'])): ?>
-                        <div class="api-key-box">
-                            <input type="password" id="apiKeyField" value="<?= htmlspecialchars($currentUser['api_key']); ?>" readonly>
-                            <button type="button" class="btn-sm btn-purple" onclick="toggleApiKey()"><i class="fa-solid fa-eye"></i> Show</button>
-                            <button type="button" class="btn-sm btn-purple" onclick="copyText(document.getElementById('apiKeyField').value, 'API key copied!')"><i class="fa-solid fa-copy"></i> Copy</button>
-                        </div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-                            <form method="POST" action="dashboard.php" onsubmit="return confirm('Generate a new API key? Your old key will stop working immediately.');">
-                                <input type="hidden" name="action" value="generate_api_key">
-                                <button type="submit" class="btn-sm btn-purple"><i class="fa-solid fa-arrows-rotate"></i> Regenerate</button>
-                            </form>
-                            <form method="POST" action="dashboard.php" onsubmit="return confirm('Revoke API key? API access will be disabled for your account.');">
-                                <input type="hidden" name="action" value="revoke_api_key">
-                                <button type="submit" class="btn-sm btn-red"><i class="fa-solid fa-ban"></i> Revoke</button>
-                            </form>
-                        </div>
-                        <p style="font-size:11.5px; color:#f87171; margin-top:8px;"><i class="fa-solid fa-triangle-exclamation"></i> Keep it secret. Anyone with this key can reset your keys.</p>
-                    <?php else: ?>
-                        <p style="color:#8b7ba8; font-size:13px; margin-bottom:10px;">You don't have an API key yet.</p>
-                        <form method="POST" action="dashboard.php">
-                            <input type="hidden" name="action" value="generate_api_key">
-                            <button type="submit" class="btn-generate" style="max-width:260px; height:46px;"><i class="fa-solid fa-key"></i> Generate API Key</button>
-                        </form>
-                    <?php endif; ?>
+                <div class="api-hero">
+                    <h3><i class="fa-solid fa-code"></i> Developer API</h3>
+                    <p>Reset your customers' device lock from your own bot or website. <b>No API key is needed to reset a key</b> &mdash; just send the license key.</p>
+                    <div class="chip-row">
+                        <span class="chip good"><i class="fa-solid fa-lock-open"></i> Reset needs no API key</span>
+                        <span class="chip"><i class="fa-solid fa-rotate-left"></i> <?= $limTxt; ?></span>
+                        <span class="chip <?= $apiEnabled ? 'good' : 'bad'; ?>"><i class="fa-solid <?= $apiEnabled ? 'fa-circle-check' : 'fa-circle-xmark'; ?>"></i> API <?= $apiEnabled ? 'Online' : 'Disabled'; ?></span>
+                    </div>
                 </div>
 
-                <div class="panel">
-                    <div class="doc-h" style="margin-top:0;"><i class="fa-solid fa-link"></i> Base URL</div>
-                    <div class="code-block"><pre><?= htmlspecialchars($apiBase); ?></pre><button type="button" class="copy-code" onclick="copyText('<?= htmlspecialchars($apiBase, ENT_QUOTES); ?>', 'URL copied!')">Copy</button></div>
+                <?php if (!$apiEnabled): ?>
+                    <div class="info-note" style="border-color:rgba(239,68,68,0.4); color:#fca5a5; background:rgba(239,68,68,0.08);"><i class="fa-solid fa-triangle-exclamation"></i> API access is currently disabled by the administrator. All requests are rejected until it is enabled again.</div>
+                <?php endif; ?>
 
-                    <div class="doc-h"><i class="fa-solid fa-shield-halved"></i> Authentication</div>
-                    <p style="font-size:12.5px; color:#cbd5e1; margin-bottom:8px;">Send your key in the <code style="color:#c084fc;">X-API-Key</code> header (recommended), or as <code style="color:#c084fc;">Authorization: Bearer KEY</code>, or as an <code style="color:#c084fc;">api_key</code> parameter. Both GET and POST work. Responses are always JSON.</p>
+                <div class="sub-nav-pills">
+                    <button type="button" class="sub-pill-btn active" onclick="switchApiSection('overview', this)"><i class="fa-solid fa-rocket"></i> Overview</button>
+                    <button type="button" class="sub-pill-btn" onclick="switchApiSection('endpoints', this)"><i class="fa-solid fa-list"></i> Endpoints</button>
+                    <button type="button" class="sub-pill-btn" onclick="switchApiSection('examples', this)"><i class="fa-solid fa-terminal"></i> Examples</button>
+                </div>
 
-                    <div class="doc-h"><i class="fa-solid fa-list"></i> Endpoints</div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead><tr><th>action</th><th>Parameters</th><th>Description</th></tr></thead>
-                            <tbody>
-                                <tr><td><span class="method-tag">reset_key</span></td><td><code>license_key</code></td><td>Reset the device HWID of one of your keys (counts toward the daily limit).</td></tr>
-                                <tr><td><span class="method-tag">key_info</span></td><td><code>license_key</code></td><td>Status, game, expiry, device-bound and resets left today.</td></tr>
-                                <tr><td><span class="method-tag">products</span></td><td>-</td><td>List games and plans with prices.</td></tr>
-                                <tr><td><span class="method-tag">balance</span></td><td>-</td><td>Your current balance and daily reset limit.</td></tr>
-                            </tbody>
-                        </table>
+                <!-- OVERVIEW -->
+                <div id="apiview-overview" class="sub-view active">
+                    <div class="api-steps">
+                        <div class="api-step"><div class="num">1</div><b>Take a license key</b><span>Any key from your Key History, e.g. <code style="color:#c084fc;">FF-XXXXXX-XXXXXX</code>.</span></div>
+                        <div class="api-step"><div class="num">2</div><b>Call reset_key</b><span>Send <code style="color:#c084fc;">license_key</code> to the Base URL. No login, no API key.</span></div>
+                        <div class="api-step"><div class="num">3</div><b>Done</b><span>The device lock is removed. Each key can be reset <?= $resetLimitLabel; ?>.</span></div>
                     </div>
 
-                    <div class="doc-h"><i class="fa-solid fa-terminal"></i> Example: cURL</div>
-                    <div class="code-block"><pre id="ex-curl">curl -X POST "<?= htmlspecialchars($apiBase); ?>?action=reset_key" \
-  -H "X-API-Key: <?= htmlspecialchars($apiKeyShown); ?>" \
-  -d "license_key=FF-XXXXXX-XXXXXX"</pre><button type="button" class="copy-code" onclick="copyText(document.getElementById('ex-curl').innerText, 'Copied!')">Copy</button></div>
+                    <div class="panel">
+                        <h3><i class="fa-solid fa-link"></i> Base URL</h3>
+                        <div class="url-bar">
+                            <span class="verb">GET / POST</span>
+                            <code id="baseUrlText"><?= $bH; ?></code>
+                            <button type="button" class="copy-code" onclick="copyText(document.getElementById('baseUrlText').innerText, 'URL copied!')"><i class="fa-solid fa-copy"></i> Copy</button>
+                        </div>
+                        <p style="font-size:12px; color:#8b7ba8; margin-top:10px;">All responses are JSON. Pick the action with <code style="color:#c084fc;">?action=...</code></p>
+                    </div>
 
-                    <div class="doc-h"><i class="fa-brands fa-python"></i> Example: Python</div>
-                    <div class="code-block"><pre id="ex-py">import requests
+                    <div class="panel">
+                        <h3><i class="fa-solid fa-key"></i> Your API Key <span style="font-size:10px; font-weight:800; color:#facc15; background:rgba(234,179,8,0.15); border:1px solid rgba(234,179,8,0.3); padding:2px 8px; border-radius:6px;">OPTIONAL</span></h3>
+                        <p style="color:#8b7ba8; font-size:12.5px; margin-bottom:12px; line-height:1.55;">Not needed for resetting. Use it only if you want to (a) read your <b>balance</b>, or (b) lock requests so they can only touch <b>your own</b> keys &mdash; send it in the <code style="color:#c084fc;">X-API-Key</code> header.</p>
 
-r = requests.post(
-    "<?= htmlspecialchars($apiBase); ?>",
-    params={"action": "reset_key"},
-    headers={"X-API-Key": "<?= htmlspecialchars($apiKeyShown); ?>"},
-    data={"license_key": "FF-XXXXXX-XXXXXX"},
-)
-print(r.json())</pre><button type="button" class="copy-code" onclick="copyText(document.getElementById('ex-py').innerText, 'Copied!')">Copy</button></div>
+                        <?php if (!empty($currentUser['api_key'])): ?>
+                            <div class="api-key-box">
+                                <input type="password" id="apiKeyField" value="<?= htmlspecialchars($currentUser['api_key']); ?>" readonly>
+                                <button type="button" class="btn-sm btn-purple" onclick="toggleApiKey()"><i class="fa-solid fa-eye"></i> Show</button>
+                                <button type="button" class="btn-sm btn-purple" onclick="copyText(document.getElementById('apiKeyField').value, 'API key copied!')"><i class="fa-solid fa-copy"></i> Copy</button>
+                            </div>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+                                <form method="POST" action="dashboard.php" onsubmit="return confirm('Generate a new API key? Your old key will stop working immediately.');">
+                                    <input type="hidden" name="action" value="generate_api_key">
+                                    <button type="submit" class="btn-sm btn-purple"><i class="fa-solid fa-arrows-rotate"></i> Regenerate</button>
+                                </form>
+                                <form method="POST" action="dashboard.php" onsubmit="return confirm('Revoke API key?');">
+                                    <input type="hidden" name="action" value="revoke_api_key">
+                                    <button type="submit" class="btn-sm btn-red"><i class="fa-solid fa-ban"></i> Revoke</button>
+                                </form>
+                            </div>
+                            <p style="font-size:11.5px; color:#f87171; margin-top:10px;"><i class="fa-solid fa-triangle-exclamation"></i> Keep it secret.</p>
+                        <?php else: ?>
+                            <form method="POST" action="dashboard.php">
+                                <input type="hidden" name="action" value="generate_api_key">
+                                <button type="submit" class="btn-generate" style="max-width:260px; height:46px;"><i class="fa-solid fa-key"></i> Generate API Key</button>
+                            </form>
+                        <?php endif; ?>
+                    </div>
+                </div>
 
-                    <div class="doc-h"><i class="fa-brands fa-js"></i> Example: JavaScript (Node / server side)</div>
-                    <div class="code-block"><pre id="ex-js">const res = await fetch("<?= htmlspecialchars($apiBase); ?>?action=reset_key", {
-  method: "POST",
-  headers: {
-    "X-API-Key": "<?= htmlspecialchars($apiKeyShown); ?>",
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
-  body: new URLSearchParams({ license_key: "FF-XXXXXX-XXXXXX" })
-});
-console.log(await res.json());</pre><button type="button" class="copy-code" onclick="copyText(document.getElementById('ex-js').innerText, 'Copied!')">Copy</button></div>
+                <!-- ENDPOINTS -->
+                <div id="apiview-endpoints" class="sub-view">
+                    <details class="ep-card" open>
+                        <summary>
+                            <span class="tag tag-open">NO API KEY</span><span class="ep-name">reset_key</span><i class="fa-solid fa-chevron-down chev"></i>
+                            <span class="ep-desc">Remove the device lock of a license key (counts toward the daily limit).</span>
+                        </summary>
+                        <div class="ep-body">
+                            <h5>Parameters</h5>
+                            <div class="param-row"><code>license_key</code><em>required &mdash; the key to reset</em></div>
+                            <h5>Success</h5><?php codeBox('r-ok', 'JSON &bull; 200', $okSample); ?>
+                            <h5>Limit reached</h5><?php codeBox('r-err', 'JSON &bull; 429', $errSample); ?>
+                        </div>
+                    </details>
 
-                    <div class="doc-h"><i class="fa-solid fa-circle-check" style="color:#34d399;"></i> Success Response</div>
-                    <div class="code-block"><pre>{
-  "status": "success",
-  "message": "Device HWID reset successfully!",
-  "data": {
-    "license_key": "FF-XXXXXX-XXXXXX",
-    "game": "FreeFire",
-    "resets_used_today": 1,
-    "resets_left_today": <?= $resetLimit > 0 ? max(0, $resetLimit - 1) : 'null'; ?>,
-    "daily_limit": <?= $resetLimit; ?>
-  }
-}</pre></div>
+                    <details class="ep-card">
+                        <summary>
+                            <span class="tag tag-open">NO API KEY</span><span class="ep-name">key_info</span><i class="fa-solid fa-chevron-down chev"></i>
+                            <span class="ep-desc">Status, game, expiry, device-bound and resets left today.</span>
+                        </summary>
+                        <div class="ep-body">
+                            <h5>Parameters</h5>
+                            <div class="param-row"><code>license_key</code><em>required</em></div>
+                            <h5>Response</h5><?php codeBox('r-info', 'JSON &bull; 200', $infoSample); ?>
+                        </div>
+                    </details>
 
-                    <div class="doc-h"><i class="fa-solid fa-circle-xmark" style="color:#f87171;"></i> Error Response</div>
-                    <div class="code-block"><pre>{
-  "status": "error",
-  "code": "DAILY_LIMIT_REACHED",
-  "message": "Daily reset limit reached! You can reset this key a maximum of <?= max(1, $resetLimit); ?> times per day."
-}</pre></div>
+                    <details class="ep-card">
+                        <summary>
+                            <span class="tag tag-open">NO API KEY</span><span class="ep-name">products</span><i class="fa-solid fa-chevron-down chev"></i>
+                            <span class="ep-desc">List games (FreeFire, PUBG) with plans and prices.</span>
+                        </summary>
+                        <div class="ep-body"><h5>Parameters</h5><div class="param-row"><em>none</em></div></div>
+                    </details>
 
-                    <div class="doc-h"><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</div>
-                    <div class="table-responsive">
-                        <table>
-                            <thead><tr><th>HTTP</th><th>code</th><th>Meaning</th></tr></thead>
-                            <tbody>
-                                <tr><td>400</td><td><code>MISSING_PARAMETER</code> / <code>UNKNOWN_ACTION</code></td><td>Required parameter or action is missing/invalid.</td></tr>
-                                <tr><td>401</td><td><code>INVALID_API_KEY</code></td><td>API key missing or wrong.</td></tr>
-                                <tr><td>403</td><td><code>ACCOUNT_BANNED</code></td><td>Your account is suspended.</td></tr>
-                                <tr><td>404</td><td><code>KEY_NOT_FOUND</code></td><td>Key does not exist in your account.</td></tr>
-                                <tr><td>409</td><td><code>NO_DEVICE_BOUND</code></td><td>Key has no device bound, nothing to reset (not counted).</td></tr>
-                                <tr><td>429</td><td><code>DAILY_LIMIT_REACHED</code></td><td>Daily reset limit for this key is used up. Try again tomorrow.</td></tr>
-                                <tr><td>503</td><td><code>API_DISABLED</code></td><td>API turned off by the administrator.</td></tr>
-                            </tbody>
-                        </table>
+                    <details class="ep-card">
+                        <summary>
+                            <span class="tag tag-key">API KEY</span><span class="ep-name">balance</span><i class="fa-solid fa-chevron-down chev"></i>
+                            <span class="ep-desc">Your current balance and the daily reset limit.</span>
+                        </summary>
+                        <div class="ep-body"><h5>Header</h5><div class="param-row"><code>X-API-Key</code><em>required &mdash; your API key</em></div></div>
+                    </details>
+
+                    <div class="panel" style="margin-top:16px;">
+                        <h3><i class="fa-solid fa-triangle-exclamation"></i> Error Codes</h3>
+                        <div class="err-row"><div class="http">400</div><div><code>MISSING_PARAMETER</code> / <code>UNKNOWN_ACTION</code><span>A required parameter or the action is missing.</span></div></div>
+                        <div class="err-row"><div class="http">401</div><div><code>INVALID_API_KEY</code><span>Wrong API key (or missing for <b>balance</b>).</span></div></div>
+                        <div class="err-row"><div class="http">403</div><div><code>ACCOUNT_BANNED</code><span>The key owner's account is suspended.</span></div></div>
+                        <div class="err-row"><div class="http">404</div><div><code>KEY_NOT_FOUND</code><span>No such license key.</span></div></div>
+                        <div class="err-row"><div class="http">409</div><div><code>NO_DEVICE_BOUND</code><span>Key has no device lock, nothing to reset (not counted).</span></div></div>
+                        <div class="err-row"><div class="http">429</div><div><code>DAILY_LIMIT_REACHED</code> / <code>RATE_LIMITED</code><span>Daily reset limit used up, or too many wrong keys from one IP. Try later.</span></div></div>
+                        <div class="err-row"><div class="http">503</div><div><code>API_DISABLED</code><span>API turned off by the administrator.</span></div></div>
+                    </div>
+                </div>
+
+                <!-- EXAMPLES -->
+                <div id="apiview-examples" class="sub-view">
+                    <div class="panel">
+                        <h3><i class="fa-solid fa-terminal"></i> Reset a key &mdash; no API key needed</h3>
+                        <div class="lang-tabs">
+                            <?php $first = true; foreach ($examples as $id => $ex): ?>
+                                <button type="button" class="lang-btn <?= $first ? 'active' : ''; ?>" onclick="switchLang('<?= $id; ?>', this)"><i class="<?= str_contains($ex[1], ' ') ? $ex[1] : 'fa-solid ' . $ex[1]; ?>"></i> <?= $ex[0]; ?></button>
+                            <?php $first = false; endforeach; ?>
+                        </div>
+                        <?php $first = true; foreach ($examples as $id => $ex): ?>
+                            <div class="code-pane <?= $first ? 'active' : ''; ?>" id="pane-<?= $id; ?>"><?php codeBox('ex-' . $id, $ex[0], $ex[2]); ?></div>
+                        <?php $first = false; endforeach; ?>
+                        <div class="info-note" style="margin-top:12px;"><i class="fa-solid fa-circle-info"></i> Want requests limited to <b>your own keys</b>? Add the header <code>X-API-Key: YOUR_API_KEY</code> and the API will only accept keys that belong to your account.</div>
                     </div>
                 </div>
             </div>
@@ -1501,6 +1593,22 @@ console.log(await res.json());</pre><button type="button" class="copy-code" oncl
         function copyAddress() {
             const address = document.getElementById('payAddress').innerText.trim();
             copyText(address, "Address copied to clipboard: " + address);
+        }
+
+        // API Documents: Overview / Endpoints / Examples
+        function switchApiSection(sec, btn) {
+            document.querySelectorAll('#tab-api .sub-view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('#tab-api .sub-pill-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const t = document.getElementById('apiview-' + sec);
+            if (t) t.classList.add('active');
+        }
+        function switchLang(id, btn) {
+            document.querySelectorAll('.code-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const t = document.getElementById('pane-' + id);
+            if (t) t.classList.add('active');
         }
 
         document.addEventListener("DOMContentLoaded", () => {

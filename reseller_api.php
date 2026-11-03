@@ -3,7 +3,8 @@
  * CrackMaster Reseller API
  * --------------------------------------------------------------
  * Actions : reset_key | key_info | products | balance
- * Auth    : X-API-Key header  (অথবা Authorization: Bearer KEY, অথবা api_key প্যারামিটার)
+ * Auth    : reset_key/key_info/products => API key লাগে না (শুধু license_key)
+ *            balance => X-API-Key header (অথবা Bearer / api_key প্যারামিটার)
  * Limit   : প্রতি key তে দৈনিক reset limit অ্যাডমিন প্যানেল (API & Reset Limit) থেকে সেট হয়
  *
  * নোট: নাম reseller_api.php রাখা হয়েছে যাতে আপনার আগের api.php (চিট অ্যাপের লাইসেন্স API)
@@ -38,7 +39,9 @@ if (getSetting($pdo, 'api_enabled', '1') !== '1') {
     apiErr(503, 'API_DISABLED', 'API access is currently disabled by the administrator.');
 }
 
-// ---------- Authentication ----------
+// ---------- Authentication (OPTIONAL) ----------
+// reset_key / key_info / products => API key ছাড়াই চলে (শুধু license_key লাগে)
+// balance => API key লাগে. API key দিলে key টি সেই ইউজারের কি না যাচাই হয়।
 $apiKey = '';
 if (!empty($_SERVER['HTTP_X_API_KEY'])) {
     $apiKey = trim($_SERVER['HTTP_X_API_KEY']);
@@ -48,49 +51,65 @@ if (!empty($_SERVER['HTTP_X_API_KEY'])) {
     $apiKey = trim((string)$input['api_key']);
 }
 
-if ($apiKey === '' || strlen($apiKey) > 64) {
-    apiErr(401, 'INVALID_API_KEY', 'Missing or invalid API key.');
+$user = null;
+if ($apiKey !== '') {
+    if (strlen($apiKey) > 64) apiErr(401, 'INVALID_API_KEY', 'Invalid API key.');
+    try {
+        $st = $pdo->prepare("SELECT * FROM users WHERE api_key = ? LIMIT 1");
+        $st->execute([$apiKey]);
+        $user = $st->fetch();
+    } catch (Throwable $e) { $user = false; }
+    if (!$user) apiErr(401, 'INVALID_API_KEY', 'Invalid API key.');
+    if (($user['status'] ?? 'active') === 'banned') apiErr(403, 'ACCOUNT_BANNED', 'Your account has been suspended.');
 }
 
-try {
-    $st = $pdo->prepare("SELECT * FROM users WHERE api_key = ? LIMIT 1");
-    $st->execute([$apiKey]);
-    $user = $st->fetch();
-} catch (Throwable $e) {
-    // api_key কলাম এখনো তৈরি হয়নি (কেউ ড্যাশবোর্ডে ঢোকেনি)
-    apiErr(401, 'INVALID_API_KEY', 'Missing or invalid API key.');
-}
-
-if (!$user) {
-    apiErr(401, 'INVALID_API_KEY', 'Missing or invalid API key.');
-}
-if (($user['status'] ?? 'active') === 'banned') {
-    apiErr(403, 'ACCOUNT_BANNED', 'Your account has been suspended.');
-}
-
-$userId     = (int)$user['id'];
 $resetLimit = getResetLimit($pdo);
 $games      = gameCatalog();
 $action     = strtolower(trim((string)($input['action'] ?? '')));
 
-// license_key দিয়ে নিজের key খুঁজে বের করা (শুধু মালিক, ট্র্যাশ করা বাদ)
-function apiFindLicense(PDO $pdo, $userId, $input) {
+// ---------- IP throttle (API key ছাড়া key অনুমান করে ঘোরা ঠেকাতে) ----------
+function apiThrottle($failed = false) {
+    $f = sys_get_temp_dir() . '/cm_api_' . md5($_SERVER['REMOTE_ADDR'] ?? '0') . '.json';
+    $d = @json_decode(@file_get_contents($f), true);
+    if (!is_array($d) || ($d['t'] ?? 0) < time() - 600) $d = ['t' => time(), 'n' => 0];
+    if ($failed) { $d['n']++; @file_put_contents($f, json_encode($d), LOCK_EX); }
+    return $d['n'] >= 15;   // ১০ মিনিটে ১৫টি ভুল key হলে সাময়িক ব্লক
+}
+
+// license_key দিয়ে key খুঁজে বের করা
+function apiFindLicense(PDO $pdo, $user, $input) {
     $key = trim((string)($input['license_key'] ?? ''));
     if ($key === '' || strlen($key) > 100) {
         apiErr(400, 'MISSING_PARAMETER', 'Parameter "license_key" is required.');
     }
-    $st = $pdo->prepare("SELECT * FROM licenses WHERE license_key = ? AND user_id = ? AND is_deleted = 0 LIMIT 1");
-    $st->execute([$key, (int)$userId]);
+    if (!$user && apiThrottle()) {
+        apiErr(429, 'RATE_LIMITED', 'Too many invalid attempts. Please try again in a few minutes.');
+    }
+    if ($user) {
+        $st = $pdo->prepare("SELECT * FROM licenses WHERE license_key = ? AND user_id = ? AND is_deleted = 0 LIMIT 1");
+        $st->execute([$key, (int)$user['id']]);
+    } else {
+        $st = $pdo->prepare("SELECT * FROM licenses WHERE license_key = ? AND is_deleted = 0 LIMIT 1");
+        $st->execute([$key]);
+    }
     $l = $st->fetch();
-    if (!$l) apiErr(404, 'KEY_NOT_FOUND', 'Key not found in your account.');
+    if (!$l) {
+        if (!$user) apiThrottle(true);
+        apiErr(404, 'KEY_NOT_FOUND', $user ? 'Key not found in your account.' : 'Key not found.');
+    }
+    if (!$user && !empty($l['user_id'])) {   // মালিক ব্যান থাকলে রিসেট বন্ধ
+        $o = $pdo->prepare("SELECT status FROM users WHERE id = ?");
+        $o->execute([(int)$l['user_id']]);
+        if ($o->fetchColumn() === 'banned') apiErr(403, 'ACCOUNT_BANNED', 'The owner account of this key is suspended.');
+    }
     return $l;
 }
 
 switch ($action) {
 
     case 'reset_key':
-        $lic = apiFindLicense($pdo, $userId, $input);
-        $res = resetLicenseHwid($pdo, $userId, (int)$lic['id'], $resetLimit);
+        $lic = apiFindLicense($pdo, $user, $input);
+        $res = resetLicenseHwid($pdo, ($lic['user_id'] === null ? null : (int)$lic['user_id']), (int)$lic['id'], $resetLimit);
 
         if ($res['ok']) {
             apiOut(200, [
@@ -111,7 +130,7 @@ switch ($action) {
         break;
 
     case 'key_info':
-        $lic  = apiFindLicense($pdo, $userId, $input);
+        $lic  = apiFindLicense($pdo, $user, $input);
         $used = resetsUsedToday($lic);
         if (!empty($lic['is_banned']))      $state = 'banned';
         elseif (!empty($lic['is_paused']))  $state = 'paused';
@@ -150,6 +169,7 @@ switch ($action) {
         break;
 
     case 'balance':
+        if (!$user) apiErr(401, 'INVALID_API_KEY', 'This action requires an API key.');
         apiOut(200, [
             'status' => 'success',
             'data'   => [
